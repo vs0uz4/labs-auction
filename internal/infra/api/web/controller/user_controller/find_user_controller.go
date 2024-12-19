@@ -2,11 +2,13 @@ package user_controller
 
 import (
 	"context"
-	"fullcycle-auction_go/configuration/rest_err"
-	"fullcycle-auction_go/internal/usecase/user_usecase"
+	"net/http"
+
+	"github.com/vs0uz4/labs-auction/config/rest_err"
+	"github.com/vs0uz4/labs-auction/internal/usecase/user_usecase"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"net/http"
 )
 
 type UserController struct {

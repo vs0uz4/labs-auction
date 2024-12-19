@@ -1,4 +1,4 @@
-module fullcycle-auction_go
+module github.com/vs0uz4/labs-auction
 
 go 1.20
 
