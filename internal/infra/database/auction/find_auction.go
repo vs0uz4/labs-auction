@@ -3,6 +3,7 @@ package auction
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"time"
 
 	"github.com/vs0uz4/labs-auction/config/logger"
@@ -50,7 +51,8 @@ func (repo *AuctionRepository) FindAuctions(
 	}
 
 	if productName != "" {
-		filter["productName"] = primitive.Regex{Pattern: productName, Options: "i"}
+		escapedProductName := regexp.QuoteMeta(productName)
+		filter["product_name"] = primitive.Regex{Pattern: escapedProductName, Options: "i"}
 	}
 
 	cursor, err := repo.Collection.Find(ctx, filter)
