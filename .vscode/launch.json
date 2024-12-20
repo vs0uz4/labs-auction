@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Local - Launch Auction API",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/cmd/auction",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "BATCH_INSERT_INTERVAL": "20s",
+                "MAX_BATCH_SIZE": "4",
+                "AUCTION_INTERVAL": "20s",
+                "MONGO_INITDB_ROOT_USERNAME": "admin",
+                "MONGO_INITDB_ROOT_PASSWORD": "admin",
+                "MONGODB_URL": "mongodb://admin:admin@localhost:27017/auctions?authSource=admin",
+                "MONGODB_DB": "auctions"
+            },
+            "args": [],
+            "showLog": true
+        }
+    ]
+}
