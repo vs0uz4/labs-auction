@@ -8,6 +8,9 @@
   - [Requisitos a Serem Seguidos](#requisitos-a-serem-seguidos)
   - [Entrega](#entrega)
   - [Extras](#extras)
+    - [Correções](#correções)
+    - [Mongo-Init](#mongo-init)
+    - [Health-Check](#health-check)
     - [Usuários Default\`s](#usuários-defaults)
   - [Executando a Aplicação](#executando-a-aplicação)
     - [Subindo a Aplicação](#subindo-a-aplicação)
@@ -64,12 +67,50 @@ segue uma lista de algumas correções e adições realizadas no projeto com o i
 > [!WARNING]
 > A listagem de correções e implementações abaixo não faziam parte do enunciado do desafio e nem tão pouco eram obrigatórias!
 
-- Correção do `FindBidByAuctionId` no respositório de Bids, fazendo com que seja possível pesquisar os lances por `auctionId`;
-- Correção do `FindAuctions` no repositório de Auctions, fazendo com que seja possível pesquisar também por `productName`;
-- Implementação de camada de tratamento para `productName` evitando que caracteres especiais possam ser interpretados pelo Mongo como operadores `regex`;
-- Configurações dos `paths` de `output` para os Logs do framework ZapCore, de forma que os mesmos sejam direcionados para Std;
-- Adição de `script` de inicialização do MongoDB criando `collections`, `indíces` e `seeds` de usuários defaults para testar a aplicação;
-- Adição de `health-check` para o serviço do MongoDB no docker-compose.yml e configuração de `dependency` para a aplicação.
+### Correções
+
+- Correção do `FindBidByAuctionId` no respositório de [Bids](https://github.com/vs0uz4/labs-auction/commit/a4bb9667dcd2b77391d399b43a497e96ef35b546), fazendo com que seja possível pesquisar os lances por `auctionId`;
+- Correção do `FindAuctions` no repositório de [Auctions](https://github.com/vs0uz4/labs-auction/commit/d1a5fbdcdb8aa7984d86e976f869ce732dbe2cc1#diff-e3b2732712478852b2908caf412ccd62f7f0ca41c8595a333b23b1d7e4a65cc2R55), fazendo com que seja possível pesquisar também por `productName`;
+- Implementação de [camada](https://github.com/vs0uz4/labs-auction/commit/d1a5fbdcdb8aa7984d86e976f869ce732dbe2cc1#diff-e3b2732712478852b2908caf412ccd62f7f0ca41c8595a333b23b1d7e4a65cc2R54) de tratamento para `productName` evitando que caracteres especiais possam ser interpretados pelo Mongo como operadores `regex`;
+- [Configurações](https://github.com/vs0uz4/labs-auction/commit/71c9f127172ca6d85622f1b82f9088d81b14d89a) dos `paths` de `output` para os Logs do framework ZapCore, de forma que os mesmos sejam direcionados para Std;
+
+### Mongo-Init
+
+Adição de `script` de inicialização do MongoDB criando `collections`, `indíces` e `seeds` de usuários defaults para testar a aplicação;
+
+```javascript
+db.createCollection("users");
+db.createCollection("auctions");
+db.createCollection("bids");
+
+db.auctions.createIndex({ status: 1, category: 1 });
+db.auctions.createIndex({ product_name: "text" });
+
+db.bids.createIndex({ auction_id: 1, amount: -1 });
+---
+```
+
+### Health-Check
+
+Adição de `health-check` para o serviço do MongoDB no docker-compose.yml e configuração de `dependency` para a aplicação.
+
+MongoDB Service
+
+```yaml
+healthcheck:
+  test: ["CMD", "mongosh", "--quiet", "-u", "admin", "-p", "admin", "--eval", "db.adminCommand('ping').ok"]
+  interval: 10s
+  timeout: 5s
+  retries: 3
+```
+
+App Service
+
+```yaml
+depends_on:
+  mongodb:
+    condition: service_healthy
+```
 
 ### Usuários Default`s
 
