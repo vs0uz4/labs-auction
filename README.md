@@ -15,6 +15,7 @@
   - [Executando a Aplicação](#executando-a-aplicação)
     - [Subindo a Aplicação](#subindo-a-aplicação)
     - [Encerrando a Aplicação](#encerrando-a-aplicação)
+    - [Rotas da Aplicação](#rotas-da-aplicação)
   - [Leilões (`auctions`)](#leilões-auctions)
     - [Criando um Leilão](#criando-um-leilão)
     - [Consultando Leilões](#consultando-leilões)
@@ -153,8 +154,6 @@ Na janela do terminal, você deverá ver uma mensagem parecida com o exemplo aba
  ✔ Container auctionapp  Started   0.7s
 ```
 
-> A aplicação estará disponível no seguinte endereço `http://localhost:8080`
-
 ### Encerrando a Aplicação
 
 Para encerrar a aplicação estando na janela do terminal onde iniciamos a mesma, bastar executarmos o seguinte comando abaixo:
@@ -169,6 +168,21 @@ Na janela do terminal, você deverá ver uma mensagem parecida com o exemplo aba
 [+] Stopping 2/2
  ✔ Container auctionapp  Stopped  0.1s 
  ✔ Container mongodb     Stopped  0.2s
+```
+
+### Rotas da Aplicação
+
+A aplicação após está em execução em ambiente local, disponibilizará suas rotas a partir do seguinte endereço `http://localhost:8080` as
+rotas disponíveis na API da aplicação, são as seguintes listadas abaixo:
+
+```plaintext
+GET    /auction                   --> Consulta leilões por status, category ou productName
+GET    /auction/:auctionId        --> Consulta leilões por Id
+POST   /auction                   --> Cria novos leilões
+GET    /auction/winner/:auctionId --> Consulta lances vencedores de um leilão
+POST   /bid                       --> Cria novos lances
+GET    /bid/:auctionId            --> Consulta lances de um leilão
+GET    /user/:userId              --> Consulta dados de um usuário
 ```
 
 ## Leilões (`auctions`)
