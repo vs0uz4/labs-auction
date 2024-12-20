@@ -1,32 +1,41 @@
-version: '3.8'
-
 services:
   app:
     build:
       dockerfile: Dockerfile
       context: .
+    container_name: auctionapp
+    depends_on:
+      mongodb:
+        condition: service_healthy
     ports:
       - "8080:8080"
     env_file:
       - cmd/auction/.env
-    command: sh -c "/auction"
+    command: sh -c "/app/auction"
     networks:
       - localNetwork
 
   mongodb:
-    image: mongo:latest
+    build:
+      context: ./internal/infra/database/docker
     container_name: mongodb
     ports:
       - "27017:27017"
     env_file:
       - cmd/auction/.env
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db
+      - ./internal/infra/database/docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - localNetwork
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "-u", "admin", "-p", "admin", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 volumes:
-  mongo-data:
+  mongo_data:
     driver: local
 
 networks:
