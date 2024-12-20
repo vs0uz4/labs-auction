@@ -118,18 +118,20 @@ depends_on:
 Os dados dos usuários que serão adicionados automaticamente ao MongoDB através do `seed` implementado, são os seguintes:
 
 ```json
-{
-  _id: "d290f1ee-6c54-4b01-90e6-d701748f0851",
-  name: "John Doe",
-},
-{
-  _id: "93fb1e9c-523f-4d92-80b4-0f7ba12fef56",
-  name: "Jane Smith",
-},
-{
-  _id: "4be43d3d-5f47-4881-a07b-8b5d3c5296c1",
-  name: "Alice Johnson",
-},
+[
+  {
+    "_id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+    "name": "John Doe",
+  },
+  {
+    "_id": "93fb1e9c-523f-4d92-80b4-0f7ba12fef56",
+    "name": "Jane Smith",
+  },
+  {
+    "_id": "4be43d3d-5f47-4881-a07b-8b5d3c5296c1",
+    "name": "Alice Johnson",
+  }
+]
 ```
 
 > Utilize os `id's` destes usuários para poder criar os lances(`bids`) do leilão.
