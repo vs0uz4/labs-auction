@@ -2,12 +2,11 @@ package bid_usecase
 
 import (
 	"context"
-	"os"
-	"strconv"
 	"time"
 
 	"github.com/vs0uz4/labs-auction/config/logger"
 	"github.com/vs0uz4/labs-auction/internal/entity/bid_entity"
+	"github.com/vs0uz4/labs-auction/internal/infra/utils"
 	"github.com/vs0uz4/labs-auction/internal/internal_error"
 )
 
@@ -35,8 +34,8 @@ type BidUseCase struct {
 }
 
 func NewBidUseCase(bidRepository bid_entity.BidEntityRepository) BidUseCaseInterface {
-	maxSizeInterval := getMaxBatchSizeInterval()
-	maxBatchSize := getMaxBatchSize()
+	maxSizeInterval := utils.GetMaxBatchSizeInterval()
+	maxBatchSize := utils.GetMaxBatchSize()
 
 	bidUseCase := &BidUseCase{
 		BidRepository:       bidRepository,
@@ -114,23 +113,4 @@ func (bu *BidUseCase) CreateBid(
 	bu.bidChannel <- *bidEntity
 
 	return nil
-}
-
-func getMaxBatchSizeInterval() time.Duration {
-	batchInsertInterval := os.Getenv("BATCH_INSERT_INTERVAL")
-	duration, err := time.ParseDuration(batchInsertInterval)
-	if err != nil {
-		return 3 * time.Minute
-	}
-
-	return duration
-}
-
-func getMaxBatchSize() int {
-	value, err := strconv.Atoi(os.Getenv("MAX_BATCH_SIZE"))
-	if err != nil {
-		return 5
-	}
-
-	return value
 }
