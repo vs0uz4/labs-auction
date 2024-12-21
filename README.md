@@ -341,6 +341,21 @@ Para cadastrar um novo item para leiloar, deverá ser realizada uma requisição
 }
 ```
 
+Exemplo de requisição usando CURL
+
+```curl
+curl --request POST \
+  --url http://localhost:8080/auction \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.2.0' \
+  --data '{
+ "product_name": "Kit de Chave de Fenda Mijia Wiha Para uso Diário",
+ "category": "Ferramentas",
+ "description": "Xiaomi Wiha Chave de Fenda de Precisão 24 em 1 - Modelo: JXLSD01XH",
+ "condition": 0
+}'
+```
+
 > Em um cenário de sucesso, você deverá receber uma resposta sem `conteúdo` com um **HTTP Status Code** igual à **201**.
 
 > [!NOTE]
@@ -364,6 +379,15 @@ Para consultar um leilão por seu ID, deverá ser realizada uma requisição do 
 http://localhost:8080/auction/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa
 ```
 
+Exemplo de requisição usando CURL
+
+```curl
+curl --request GET \
+  --url http://localhost:8080/auction/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.2.0'
+```
+
 > Em um cenário de sucesso, você deverá receber um **HTTP Status Code** igual a **200** e um conteúdo precido com o seguinte abaixo:
 
 ```json
@@ -384,6 +408,14 @@ Para consultar um leilão por seu ID, deverá ser realizada uma requisição do 
 
 ```http
 http://localhost:8080/auction?status=0&productName=Mijia
+```
+
+Exemplo de requisição usando CURL
+
+```curl
+curl --request GET \
+  --url 'http://localhost:8080/auction?status=0&productName=Mijia' \
+  --header 'User-Agent: insomnia/10.2.0'
 ```
 
 > Em um cenário de sucesso, você deverá receber um **HTTP Status Code** igual a **200** e um conteúdo precido com o seguinte abaixo:
@@ -440,6 +472,20 @@ Onde:
 - auction_id : Deverá ser equivalente a um `id` de um item adicionado para leilão;
 - amount : Deverá ser um `float` representando o valor do lance a ser dado.
 
+Exemplo de requisição usando CURL
+
+```curl
+curl --request POST \
+  --url http://localhost:8080/bid \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.2.0' \
+  --data '{
+ "user_id": "93fb1e9c-523f-4d92-80b4-0f7ba12fef56",
+ "auction_id": "d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa",
+ "amount": 300
+}'
+```
+
 > Em um cenário de sucesso, você deverá receber uma resposta sem `conteúdo` com um **HTTP Status Code** igual à **201**.
 
 ### Consultando Lances
@@ -455,6 +501,15 @@ Para consultar os lances de um determinado leilão, deverá ser realizada uma re
 
 ```http
 http://localhost:8080/bid/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa
+```
+
+Exemplo de requisição usando CURL
+
+```curl
+curl --request GET \
+  --url http://localhost:8080/bid/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.2.0'
 ```
 
 > Em um cenário de sucesso, você deverá receber um **HTTP Status Code** igual a **200** e um conteúdo precido com o seguinte abaixo:
@@ -493,6 +548,15 @@ Para consultar o lance vencedor de um leilão, deverá ser realizada uma requisi
 http://localhost:8080/auction/winner/3b2dcc69-5ca1-4e39-9fe2-7c08ab7588b6
 ```
 
+Exemplo de requisição usando CURL
+
+```curl
+curl --request GET \
+  --url http://localhost:8080/auction/winner/3b2dcc69-5ca1-4e39-9fe2-7c08ab7588b6 \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.2.0'
+```
+
 > Em um cenário de sucesso, você deverá receber um **HTTP Status Code** igual a **200** e um conteúdo precido com o seguinte abaixo:
 
 ```json
@@ -522,6 +586,15 @@ Para consultar as informações de um usuário, deverá ser realizada uma requis
 
 ```http
 http://localhost:8080/user/d290f1ee-6c54-4b01-90e6-d701748f0851
+```
+
+Exemplo de requisição usando CURL
+
+```curl
+curl --request GET \
+  --url http://localhost:8080/user/d290f1ee-6c54-4b01-90e6-d701748f0851 \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.2.0'
 ```
 
 > Em um cenário de sucesso, você deverá receber um **HTTP Status Code** igual a **200** e um conteúdo precido com o seguinte abaixo:
