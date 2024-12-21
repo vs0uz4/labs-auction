@@ -39,7 +39,7 @@ Este projeto faz parte da Pós GoExpert como desafio, nele são cobertos os conh
 
 ## Requisitos a Serem Seguidos
 
-- Clonar o seguinte repositório: https://github.com/devfullcycle/labs-auction-goexpert;
+- Clonar o seguinte repositório: [labs-auction-goexpert](https://github.com/devfullcycle/labs-auction-goexpert);
 - Adicionar a rotina de fechamento automático a partir de um determinado tempo;
 - Utilizar `go routines` para a implementação da rotina de fechamento automático;
 
@@ -356,7 +356,7 @@ curl --request POST \
 }'
 ```
 
-> Em um cenário de sucesso, você deverá receber uma resposta sem `conteúdo` com um **HTTP Status Code** igual à **201**.
+Em um cenário de sucesso, você deverá receber uma resposta sem `conteúdo` com um **HTTP Status Code** igual à **201**.
 
 > [!NOTE]
 > Lembrando que `condition` pode variar entre `1` à `3` sendo respectivamente seus valores: \
