@@ -34,6 +34,27 @@ services:
       timeout: 5s
       retries: 3
 
+  testdb:
+    build:
+      context: ./internal/infra/database/docker
+    container_name: testdb
+    ports:
+      - "27016:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGODB_URL=mongodb://admin:admin@testdb:27016/auctions?authSource=admin
+      - MONGODB_DB=auctions
+    volumes:
+      - ./internal/infra/database/docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - localNetwork
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "-u", "admin", "-p", "admin", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 volumes:
   mongo_data:
     driver: local
