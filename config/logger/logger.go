@@ -28,6 +28,14 @@ func init() {
 	log, _ = logConfiguration.Build()
 }
 
+func GetLogger() *zap.Logger {
+	return log
+}
+
+func SetLogger(newLogger *zap.Logger) {
+	log = newLogger
+}
+
 func Info(message string, tags ...zap.Field) {
 	log.Info(message, tags...)
 	log.Sync()
