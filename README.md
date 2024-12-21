@@ -343,7 +343,7 @@ Para cadastrar um novo item para leiloar, deverá ser realizada uma requisição
 
 Exemplo de requisição usando CURL
 
-```curl
+```shell
 curl --request POST \
   --url http://localhost:8080/auction \
   --header 'Content-Type: application/json' \
@@ -381,7 +381,7 @@ http://localhost:8080/auction/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa
 
 Exemplo de requisição usando CURL
 
-```curl
+```shell
 curl --request GET \
   --url http://localhost:8080/auction/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa \
   --header 'Content-Type: application/json' \
@@ -412,7 +412,7 @@ http://localhost:8080/auction?status=0&productName=Mijia
 
 Exemplo de requisição usando CURL
 
-```curl
+```shell
 curl --request GET \
   --url 'http://localhost:8080/auction?status=0&productName=Mijia' \
   --header 'User-Agent: insomnia/10.2.0'
@@ -474,7 +474,7 @@ Onde:
 
 Exemplo de requisição usando CURL
 
-```curl
+```shell
 curl --request POST \
   --url http://localhost:8080/bid \
   --header 'Content-Type: application/json' \
@@ -505,7 +505,7 @@ http://localhost:8080/bid/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa
 
 Exemplo de requisição usando CURL
 
-```curl
+```shell
 curl --request GET \
   --url http://localhost:8080/bid/d0d0fe5c-5c7c-400c-ad6d-75d8f5daa9aa \
   --header 'Content-Type: application/json' \
@@ -550,7 +550,7 @@ http://localhost:8080/auction/winner/3b2dcc69-5ca1-4e39-9fe2-7c08ab7588b6
 
 Exemplo de requisição usando CURL
 
-```curl
+```shell
 curl --request GET \
   --url http://localhost:8080/auction/winner/3b2dcc69-5ca1-4e39-9fe2-7c08ab7588b6 \
   --header 'Content-Type: application/json' \
@@ -590,7 +590,7 @@ http://localhost:8080/user/d290f1ee-6c54-4b01-90e6-d701748f0851
 
 Exemplo de requisição usando CURL
 
-```curl
+```shell
 curl --request GET \
   --url http://localhost:8080/user/d290f1ee-6c54-4b01-90e6-d701748f0851 \
   --header 'Content-Type: application/json' \
