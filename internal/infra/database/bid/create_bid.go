@@ -2,7 +2,6 @@ package bid
 
 import (
 	"context"
-	"os"
 	"sync"
 	"time"
 
@@ -10,6 +9,7 @@ import (
 	"github.com/vs0uz4/labs-auction/internal/entity/auction_entity"
 	"github.com/vs0uz4/labs-auction/internal/entity/bid_entity"
 	"github.com/vs0uz4/labs-auction/internal/infra/database/auction"
+	"github.com/vs0uz4/labs-auction/internal/infra/utils"
 	"github.com/vs0uz4/labs-auction/internal/internal_error"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -35,7 +35,7 @@ type BidRepository struct {
 
 func NewBidRepository(database *mongo.Database, auctionRepository *auction.AuctionRepository) *BidRepository {
 	return &BidRepository{
-		auctionInterval:       getAuctionInterval(),
+		auctionInterval:       utils.GetAuctionInterval(),
 		auctionStatusMap:      make(map[string]auction_entity.AuctionStatus),
 		auctionEndTimeMap:     make(map[string]time.Time),
 		auctionStatusMapMutex: &sync.Mutex{},
@@ -109,14 +109,4 @@ func (bd *BidRepository) CreateBid(
 	}
 	wg.Wait()
 	return nil
-}
-
-func getAuctionInterval() time.Duration {
-	auctionInterval := os.Getenv("AUCTION_INTERVAL")
-	duration, err := time.ParseDuration(auctionInterval)
-	if err != nil {
-		return time.Minute * 5
-	}
-
-	return duration
 }
