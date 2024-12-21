@@ -16,6 +16,9 @@
     - [Subindo a Aplicação](#subindo-a-aplicação)
     - [Encerrando a Aplicação](#encerrando-a-aplicação)
     - [Rotas da Aplicação](#rotas-da-aplicação)
+  - [Testes](#testes)
+    - [Rodando os Testes](#rodando-os-testes)
+    - [Verificando a Cobertura dos Testes](#verificando-a-cobertura-dos-testes)
   - [Leilões (`auctions`)](#leilões-auctions)
     - [Criando um Leilão](#criando-um-leilão)
     - [Consultando Leilões](#consultando-leilões)
@@ -186,6 +189,142 @@ POST   /bid                       --> Cria novos lances
 GET    /bid/:auctionId            --> Consulta lances de um leilão
 GET    /user/:userId              --> Consulta dados de um usuário
 ```
+
+## Testes
+
+Conforme solicitado foram implementados testes para as soluções implementadas, abaixo lista dos cenários de testes cobertos:
+
+`auction_utils.go`: Arquivo contendo funções que fazem uso da variável de ambiente `AUCTION_INTERVAL` para calculos de intervalo de tempo de duração e validação de expiração de leilão, que foram extraidas para evitar duplicação de código.
+
+- Função GetAuctionInterval:
+  - Quando a variável de ambiente está definida corretamente.
+  - Quando a variável de ambiente está inválida.
+  - Quando a variável de ambiente não está definida.
+- Função IsAuctionExpired:
+  - Quando o timestamp já expirou.
+  - Quando o timestamp ainda está dentro do intervalo válido.
+
+`env_utils.go`: Arquivo contendo funções que fazem uso das variáveis de ambiente `BATCH_INSERT_INTERVAL` e `MAX_BATCH_SIZE` para calculos de intervalo e tamanho máximo para processamento em lotes, que foram extraidas para evitar duplicação de código.
+
+- Função GetMaxBatchSizeInterval:
+  - Quando a variável de ambiente está definida corretamente.
+  - Quando a variável de ambiente está inválida.
+  - Quando a variável de ambiente não está definida.
+- Função GetMaxBatchSize:
+  - Quando a variável de ambiente está definida corretamente.
+  - Quando a variável de ambiente está inválida.
+  - Quando a variável de ambiente não está definida.
+
+`create_auction.go`: Arquivo contendo funções responsável por validar os leilões, encerrando-os quando os mesmos estiverem expirados.
+
+- Função ClosingExpiredAuctions
+  - Garantia de que a execução da consulta por leilões com status `0` é realizada;
+  - Garantia de que leilões com intervalo não expirado não são atualizados;
+  - Garantia de que leilões com intervalo expirado são atualizados;
+  - Garantia de que um erro é capturado e logado em caso de falha ao realizar uma consulta;
+  - Garantia de que um erro é capturado e logado em caso de falha ao realizar uma atualização;
+  - Garantia de que um erro é capturado e logado em caso de falha ao tentar converter os dados do banco para uma entidade;
+  
+> [!TIP]
+> Os testes para validacção dos cenários dos leilões, foram implementados de duas formas isoladamente usando `mocks` e integando com o MongoDB validando o fluxo por completo,
+> devido a isto alguns testes para serem executados necessitam que a aplicação esteja de pé, ao menos, o container `testedb` que é utilizado pelos testes. Caso queira executar
+> os testes e não queira provisionar toda a aplicação, basta executar o seguinte comando `docker compose up -d testdb` no console antes de rodar os testes.
+
+### Rodando os Testes
+
+Para executar os testes implementados, basta executar o seguinte comando abaixo:
+
+```shell
+❯ go test ./internal/infra/database/auction/ ./internal/infra/utils/ -v
+```
+
+Você deverá ver uma resposta em seu console, parecida com:
+
+```shell
+=== RUN   TestClosingExpiredAuctionsWithMock
+--- PASS: TestClosingExpiredAuctionsWithMock (2.00s)
+=== RUN   TestClosingExpiredAuctionsMockingFetchingErrorWithMongo
+--- PASS: TestClosingExpiredAuctionsMockingFetchingErrorWithMongo (1.01s)
+=== RUN   TestClosingExpiredAuctionsMockingUpdateErrorWithMongo
+--- PASS: TestClosingExpiredAuctionsMockingUpdateErrorWithMongo (1.04s)
+=== RUN   TestClosingExpiredAuctionsWithMongo
+--- PASS: TestClosingExpiredAuctionsWithMongo (3.04s)
+=== RUN   TestClosingExpiredAuctionsDecodingErrorWithMongo
+--- PASS: TestClosingExpiredAuctionsDecodingErrorWithMongo (1.03s)
+PASS
+ok      github.com/vs0uz4/labs-auction/internal/infra/database/auction  8.530s
+=== RUN   TestGetAuctionInterval
+--- PASS: TestGetAuctionInterval (0.00s)
+=== RUN   TestIsAuctionExpired
+--- PASS: TestIsAuctionExpired (0.00s)
+=== RUN   TestGetMaxBatchSizeInterval
+--- PASS: TestGetMaxBatchSizeInterval (0.00s)
+=== RUN   TestGetMaxBatchSize
+--- PASS: TestGetMaxBatchSize (0.00s)
+PASS
+ok      github.com/vs0uz4/labs-auction/internal/infra/utils     0.196s
+```
+
+### Verificando a Cobertura dos Testes
+
+Para executar os testes gerando um relatório de `coverage`, basta executar o seguinte comando abaixo:
+
+```shell
+❯ go test ./internal/infra/database/auction/ ./internal/infra/utils/ -v -coverprofile=coverage.out
+```
+
+Você deverá ver uma resposta em seu console, parecida com:
+
+```shell
+=== RUN   TestClosingExpiredAuctionsWithMock
+--- PASS: TestClosingExpiredAuctionsWithMock (2.00s)
+=== RUN   TestClosingExpiredAuctionsMockingFetchingErrorWithMongo
+--- PASS: TestClosingExpiredAuctionsMockingFetchingErrorWithMongo (1.01s)
+=== RUN   TestClosingExpiredAuctionsMockingUpdateErrorWithMongo
+--- PASS: TestClosingExpiredAuctionsMockingUpdateErrorWithMongo (1.05s)
+=== RUN   TestClosingExpiredAuctionsWithMongo
+--- PASS: TestClosingExpiredAuctionsWithMongo (3.03s)
+=== RUN   TestClosingExpiredAuctionsDecodingErrorWithMongo
+--- PASS: TestClosingExpiredAuctionsDecodingErrorWithMongo (1.04s)
+PASS
+coverage: 33.9% of statements
+ok      github.com/vs0uz4/labs-auction/internal/infra/database/auction  8.632s  coverage: 33.9% of statements
+=== RUN   TestGetAuctionInterval
+--- PASS: TestGetAuctionInterval (0.00s)
+=== RUN   TestIsAuctionExpired
+--- PASS: TestIsAuctionExpired (0.00s)
+=== RUN   TestGetMaxBatchSizeInterval
+--- PASS: TestGetMaxBatchSizeInterval (0.00s)
+=== RUN   TestGetMaxBatchSize
+--- PASS: TestGetMaxBatchSize (0.00s)
+PASS
+coverage: 100.0% of statements
+ok      github.com/vs0uz4/labs-auction/internal/infra/utils     0.674s  coverage: 100.0% of statements
+```
+
+Para visualizar o relatório gerado pelos testes, e ter uma visão mais detalhada das funções cobertas pelos testes, execute o seguinte comando abaixo:
+
+```shell
+❯ go tool cover -func=coverage.out
+```
+
+Você deverá ver em seu console uma resposta parecido com:
+
+```shell
+github.com/vs0uz4/labs-auction/internal/infra/database/auction/create_auction.go:29:    NewAuctionRepository    0.0%
+github.com/vs0uz4/labs-auction/internal/infra/database/auction/create_auction.go:35:    CreateAuction           0.0%
+github.com/vs0uz4/labs-auction/internal/infra/database/auction/create_auction.go:57:    ClosingExpiredAuctions  86.4%
+github.com/vs0uz4/labs-auction/internal/infra/database/auction/find_auction.go:17:      FindAuctionById         0.0%
+github.com/vs0uz4/labs-auction/internal/infra/database/auction/find_auction.go:38:      FindAuctions            0.0%
+github.com/vs0uz4/labs-auction/internal/infra/utils/auction_utils.go:8:                 GetAuctionInterval      100.0%
+github.com/vs0uz4/labs-auction/internal/infra/utils/auction_utils.go:18:                IsAuctionExpired        100.0%
+github.com/vs0uz4/labs-auction/internal/infra/utils/env_utils.go:9:                     GetMaxBatchSizeInterval 100.0%
+github.com/vs0uz4/labs-auction/internal/infra/utils/env_utils.go:19:                    GetMaxBatchSize         100.0%
+```
+
+> [!TIP]
+> Caso queira uma visão melhor, você pode renderizar o relatório em formato HTML, basta que execute o comando anterior modificando a forma como o `coverage.out`, da seguinte maneira `go tool cover -html=coverage.out`
+> isto fará com que o relatório seja renderizado em HTML e já seja automaticamente aberto no seu navegador.
 
 ## Leilões (`auctions`)
 
