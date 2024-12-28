@@ -76,6 +76,7 @@ segue uma lista de algumas correções e adições realizadas no projeto com o i
 - Correção do `FindBidByAuctionId` no respositório de [Bids](https://github.com/vs0uz4/labs-auction/commit/a4bb9667dcd2b77391d399b43a497e96ef35b546), fazendo com que seja possível pesquisar os lances por `auctionId`;
 - Correção do `FindAuctions` no repositório de [Auctions](https://github.com/vs0uz4/labs-auction/commit/d1a5fbdcdb8aa7984d86e976f869ce732dbe2cc1#diff-e3b2732712478852b2908caf412ccd62f7f0ca41c8595a333b23b1d7e4a65cc2R55), fazendo com que seja possível pesquisar também por `productName`;
 - Implementação de [camada](https://github.com/vs0uz4/labs-auction/commit/d1a5fbdcdb8aa7984d86e976f869ce732dbe2cc1#diff-e3b2732712478852b2908caf412ccd62f7f0ca41c8595a333b23b1d7e4a65cc2R54) de tratamento para `productName` evitando que caracteres especiais possam ser interpretados pelo Mongo como operadores `regex`;
+- Correção do `FindUserById` no repositório de [Users](https://github.com/vs0uz4/labs-auction/commit/c2be3605576b8d323b883f3ef4a2ebfb9e194f95), ajustando a typagem na saida dos LOG's;
 - [Configurações](https://github.com/vs0uz4/labs-auction/commit/71c9f127172ca6d85622f1b82f9088d81b14d89a) dos `paths` de `output` para os Logs do framework ZapCore, de forma que os mesmos sejam direcionados para Std;
 
 ### Mongo-Init
